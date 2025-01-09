@@ -74,6 +74,15 @@ public class Review {
      * @param score De score van de recensie.
      */
     public void setScore(int score) {
+        if(score < 0 || score > 10) {
+            throw new IllegalArgumentException("Score moet tussen 0 en 10 liggen.");
+        }
         this.score = score;
+    }
+
+    public void printReview() {
+        System.out.println("Auteur: " + author);
+        System.out.println("Beschrijving: " + description);
+        System.out.println("Score: " + score);
     }
 }

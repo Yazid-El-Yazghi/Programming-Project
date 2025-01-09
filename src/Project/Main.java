@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         List<Film> films = new ArrayList<>();
-        String path = "C:\\Users\\yazid\\Desktop\\Poject\\Programming Project\\Programming-Project\\src\\Resources\\netflix_titles.csv";
+        String path = ".\\resources\\netflix_titles.csv";
         String line;
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
@@ -79,13 +79,15 @@ public class Main {
         boolean running = true;
 
         while (running) {
+            System.out.println("Welkom bij Rotten Potatoes!");
             System.out.println("Kies een optie:");
             System.out.println("1. Aanmaken review");
             System.out.println("2. Zoeken film/serie op naam of deel van de naam");
             System.out.println("3. Lijst films/series van een director");
             System.out.println("4. Lijst films/series van een bepaald release year");
-            System.out.println("5. Afsluiten");
-            System.out.println(films.size());
+            System.out.println("5. Bekijk een recensie");
+            System.out.println("6. Wijzig een recensie");
+            System.out.println("7. Afsluiten");            System.out.println("Totaal Films and Series in Netfix categories: "+films.size());
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline
@@ -108,6 +110,7 @@ public class Main {
                         scanner.nextLine(); // Consume newline
                         Review review = new Review(author, description, score);
                         film.addReview(review);
+                        review.printReview();
                         System.out.println("Review toegevoegd.");
                     }
                     break;
@@ -143,13 +146,60 @@ public class Main {
                     }
                     break;
                 case 5:
+                    System.out.println("Voer de titel van de film/serie in:");
+                    String filmTitleToView = scanner.nextLine();
+                    List<Film> foundFilmsToView = filmCollection.findFilmsByTitle(filmTitleToView);
+                    if (foundFilmsToView.isEmpty()) {
+                        System.out.println("Film/serie niet gevonden.");
+                    } else {
+                        Film filmToView = foundFilmsToView.get(0);
+                        System.out.println("Voer de naam van de auteur in:");
+                        String authorToView = scanner.nextLine();
+                        Review reviewToView = filmToView.getReviewByAuthor(authorToView);
+                        if (reviewToView != null) {
+                            reviewToView.printReview();
+                        } else {
+                            System.out.println("Recensie niet gevonden.");
+                        }
+                    }
+                    break;
+
+                case 6:
+                    System.out.println("Voer de titel van de film/serie in:");
+                    String filmTitleToModify = scanner.nextLine();
+                    List<Film> foundFilmsToModify = filmCollection.findFilmsByTitle(filmTitleToModify);
+                    if (foundFilmsToModify.isEmpty()) {
+                        System.out.println("Film/serie niet gevonden.");
+                    } else {
+                        Film filmToModify = foundFilmsToModify.get(0);
+                        System.out.println("Voer de naam van de auteur in:");
+                        String authorToModify = scanner.nextLine();
+                        Review reviewToModify = filmToModify.getReviewByAuthor(authorToModify);
+                        if (reviewToModify != null) {
+                            System.out.println("Voer de nieuwe beschrijving in:");
+                            String newDescription = scanner.nextLine();
+                            System.out.println("Voer de nieuwe score in:");
+                            int newScore = scanner.nextInt();
+                            scanner.nextLine(); // Consume newline
+                            if (filmToModify.updateReview(authorToModify, newDescription, newScore)) {
+                                System.out.println("Recensie bijgewerkt.");
+                            } else {
+                                System.out.println("Fout bij het bijwerken van de recensie.");
+                            }
+                        } else {
+                            System.out.println("Recensie niet gevonden.");
+                        }
+                    }
+                    break;
+
+                case 7:
                     running = false;
                     break;
+
                 default:
                     System.out.println("Ongeldige keuze. Probeer opnieuw.");
             }
         }
-
         scanner.close();
     }
 }
