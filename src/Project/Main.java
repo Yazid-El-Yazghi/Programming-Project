@@ -79,6 +79,7 @@ public class Main {
         boolean running = true;
 
         while (running) {
+            System.out.println("");
             System.out.println("Welkom bij Rotten Potatoes!");
             System.out.println("Kies een optie:");
             System.out.println("1. Aanmaken review");
@@ -87,7 +88,9 @@ public class Main {
             System.out.println("4. Lijst films/series van een bepaald release year");
             System.out.println("5. Bekijk een recensie");
             System.out.println("6. Wijzig een recensie");
-            System.out.println("7. Afsluiten");            System.out.println("Totaal Films and Series in Netfix categories: "+films.size());
+            System.out.println("7. Afsluiten");
+            System.out.println("Totaal Netfix database: "+films.size());
+            System.out.println("");
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // Consume newline

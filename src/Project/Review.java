@@ -80,6 +80,9 @@ public class Review {
         this.score = score;
     }
 
+    /**
+     * Drukt de recensie af.
+     */
     public void printReview() {
         System.out.println("Auteur: " + author);
         System.out.println("Beschrijving: " + description);
