@@ -4,42 +4,23 @@ package Project;
  * Deze klasse vertegenwoordigt een recensie van een film.
  */
 public class Review {
-    private String author;
+    private String title;
     private String description;
     private int score;
 
     /**
      * Constructor voor de Review klasse.
      *
-     * @param author De naam van de auteur van de recensie.
      * @param description De beschrijving van de recensie.
      * @param score De score van de recensie.
      */
-    public Review(String author, String description, int score) {
-        this.author = author;
+    public Review(String description, int score, String title) {
         this.description = description;
         this.score = score;
+        this.title = title;
     }
 
     // Getters en setters
-
-    /**
-     * Haalt de naam van de auteur op.
-     *
-     * @return De naam van de auteur.
-     */
-    public String getAuthor() {
-        return author;
-    }
-
-    /**
-     * Stelt de naam van de auteur in.
-     *
-     * @param author De naam van de auteur.
-     */
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     /**
      * Haalt de beschrijving van de recensie op.
@@ -69,22 +50,36 @@ public class Review {
     }
 
     /**
+     * Gets the title of the review.
+     *
+     * @return The title of the review.
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * Sets the title of the review.
+     *
+     * @param title The title of the review.
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    /**
      * Stelt de score van de recensie in.
      *
      * @param score De score van de recensie.
      */
-    public void setScore(int score) {
-        if(score < 0 || score > 10) {
-            throw new IllegalArgumentException("Score moet tussen 0 en 10 liggen.");
-        }
-        this.score = score;
-    }
+    public void setScore(int score) {this.score = score;}
 
     /**
      * Drukt de recensie af.
      */
     public void printReview() {
-        System.out.println("Auteur: " + author);
+        System.out.println("Titel review: " + getTitle());
         System.out.println("Beschrijving: " + description);
         System.out.println("Score: " + score);
     }

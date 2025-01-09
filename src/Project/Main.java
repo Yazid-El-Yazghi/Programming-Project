@@ -104,14 +104,25 @@ public class Main {
                         System.out.println("Film/serie niet gevonden.");
                     } else {
                         Film film = foundFilms.get(0);
-                        System.out.println("Voer de naam van de auteur in:");
-                        String author = scanner.nextLine();
+                        System.out.println("Voer de titel van de recensie in:");
+                        String reviewTitle = scanner.nextLine();
                         System.out.println("Voer de beschrijving in:");
                         String description = scanner.nextLine();
-                        System.out.println("Voer de score in:");
-                        int score = scanner.nextInt();
+                        int score = -1;
+                        while (score < 0 || score > 10) {
+                            System.out.println("Voer de score in tussen 0 en 10:");
+                            if (scanner.hasNextInt()) {
+                                score = scanner.nextInt();
+                                if (score < 0 || score > 10) {
+                                    System.out.println("Ongeldige score. Probeer opnieuw.");
+                                }
+                            } else {
+                                System.out.println("Ongeldige invoer. Voer een getal in.");
+                                scanner.next(); // Consume the invalid input
+                            }
+                        }
                         scanner.nextLine(); // Consume newline
-                        Review review = new Review(author, description, score);
+                        Review review = new Review(description, score, reviewTitle);
                         film.addReview(review);
                         review.printReview();
                         System.out.println("Review toegevoegd.");
@@ -149,52 +160,62 @@ public class Main {
                     }
                     break;
                 case 5:
-                    System.out.println("Voer de titel van de film/serie in:");
+                    System.out.println("Enter the title of the film/series:");
                     String filmTitleToView = scanner.nextLine();
                     List<Film> foundFilmsToView = filmCollection.findFilmsByTitle(filmTitleToView);
                     if (foundFilmsToView.isEmpty()) {
-                        System.out.println("Film/serie niet gevonden.");
+                        System.out.println("Film/series not found.");
                     } else {
                         Film filmToView = foundFilmsToView.get(0);
-                        System.out.println("Voer de naam van de auteur in:");
-                        String authorToView = scanner.nextLine();
-                        Review reviewToView = filmToView.getReviewByAuthor(authorToView);
-                        if (reviewToView != null) {
-                            reviewToView.printReview();
+                        List<Review> reviews = filmToView.getReviews();
+                        if (reviews.isEmpty()) {
+                            System.out.println("No reviews found.");
                         } else {
-                            System.out.println("Recensie niet gevonden.");
+                            for (Review review : reviews) {
+                                review.printReview();
+                                System.out.println();
+                            }
                         }
+                        System.out.println("Average score: " + filmToView.getAverageScore());
+                        System.out.println("Number of reviews: " + filmToView.getNumberOfReviews());
                     }
                     break;
 
                 case 6:
-                    System.out.println("Voer de titel van de film/serie in:");
-                    String filmTitleToModify = scanner.nextLine();
+                    System.out.println("Enter the title of the film/series:");
+                    String filmTitleToModify = scanner.nextLine().trim();
                     List<Film> foundFilmsToModify = filmCollection.findFilmsByTitle(filmTitleToModify);
                     if (foundFilmsToModify.isEmpty()) {
-                        System.out.println("Film/serie niet gevonden.");
+                        System.out.println("Film/series not found.");
                     } else {
                         Film filmToModify = foundFilmsToModify.get(0);
-                        System.out.println("Voer de naam van de auteur in:");
-                        String authorToModify = scanner.nextLine();
-                        Review reviewToModify = filmToModify.getReviewByAuthor(authorToModify);
+                        System.out.println("Enter the title of the review:");
+                        String reviewTitleToModify = scanner.nextLine().trim();
+                        Review reviewToModify = filmToModify.getReviews().stream()
+                                .filter(review -> review.getTitle().equalsIgnoreCase(reviewTitleToModify))
+                                .findFirst()
+                                .orElse(null);
                         if (reviewToModify != null) {
-                            System.out.println("Voer de nieuwe beschrijving in:");
-                            String newDescription = scanner.nextLine();
-                            System.out.println("Voer de nieuwe score in:");
+                            System.out.println("Enter the new title:");
+                            String newTitle = scanner.nextLine().trim();
+                            System.out.println("Enter the new description:");
+                            String newDescription = scanner.nextLine().trim();
+                            System.out.println("Enter the new score:");
                             int newScore = scanner.nextInt();
                             scanner.nextLine(); // Consume newline
-                            if (filmToModify.updateReview(authorToModify, newDescription, newScore)) {
-                                System.out.println("Recensie bijgewerkt.");
+                            if (newScore >= 0 && newScore <= 10) {
+                                reviewToModify.setTitle(newTitle);
+                                reviewToModify.setDescription(newDescription);
+                                reviewToModify.setScore(newScore);
+                                System.out.println("Review updated.");
                             } else {
-                                System.out.println("Fout bij het bijwerken van de recensie.");
+                                System.out.println("Invalid score. Must be between 0 and 10.");
                             }
                         } else {
-                            System.out.println("Recensie niet gevonden.");
+                            System.out.println("Review niet gevonden.");
                         }
                     }
                     break;
-
                 case 7:
                     running = false;
                     break;

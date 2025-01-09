@@ -26,7 +26,7 @@ public class FilmCollection {
      */
     public List<Film> findFilmsByTitle(String title) {
         return films.stream()
-                .filter(film -> film.getTitle() != null && film.getTitle().toLowerCase().startsWith(title.toLowerCase()))
+                .filter(film -> film.getTitle() != null && film.getTitle().toLowerCase().contains(title.toLowerCase()))
                 .collect(Collectors.toList());
     }
 

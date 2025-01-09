@@ -110,14 +110,14 @@ public class Film {
     }
 
     /**
-     * Haalt een recensie op basis van de auteur op.
+     * Haalt een recensie op basis van de titel op.
      *
-     * @param author De naam van de auteur.
-     * @return De recensie van de auteur, of null als deze niet bestaat.
+     * @param title De titel van de recensie.
+     * @return De recensie met de opgegeven titel, of null als deze niet bestaat.
      */
-    public Review getReviewByAuthor(String author) {
+    public Review getReviewByTitle(String title) {
         for (Review review : reviews) {
-            if (review.getAuthor().equalsIgnoreCase(author)) {
+            if (review.getTitle() != null && review.getTitle().equalsIgnoreCase(title)) {
                 return review;
             }
         }
@@ -125,15 +125,37 @@ public class Film {
     }
 
     /**
+     * Gets the average score of all reviews.
+     *
+     * @return The average score.
+     */
+    public double getAverageScore() {
+        if (reviews.isEmpty()) {
+            return 0.0;
+        }
+        int totalScore = reviews.stream().mapToInt(Review::getScore).sum();
+        return (double) totalScore / reviews.size();
+    }
+
+    /**
+     * Gets the number of reviews.
+     *
+     * @return The number of reviews.
+     */
+    public int getNumberOfReviews() {
+        return reviews.size();
+    }
+
+    /**
      * Wijzigt een bestaande recensie.
      *
-     * @param author De naam van de auteur van de recensie.
+     * @param title De titel van de recensie.
      * @param newDescription De nieuwe beschrijving van de recensie.
      * @param newScore De nieuwe score van de recensie.
      * @return True als de recensie is bijgewerkt, anders false.
      */
-    public boolean updateReview(String author, String newDescription, int newScore) {
-        Review review = getReviewByAuthor(author);
+    public boolean updateReview(String title, String newDescription, int newScore) {
+        Review review = getReviewByTitle(title);
         if (review != null) {
             review.setDescription(newDescription);
             review.setScore(newScore);
@@ -141,5 +163,4 @@ public class Film {
         }
         return false;
     }
-
 }
