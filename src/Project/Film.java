@@ -145,22 +145,4 @@ public class Film {
     public int getNumberOfReviews() {
         return reviews.size();
     }
-
-    /**
-     * Wijzigt een bestaande recensie.
-     *
-     * @param title De titel van de recensie.
-     * @param newDescription De nieuwe beschrijving van de recensie.
-     * @param newScore De nieuwe score van de recensie.
-     * @return True als de recensie is bijgewerkt, anders false.
-     */
-    public boolean updateReview(String title, String newDescription, int newScore) {
-        Review review = getReviewByTitle(title);
-        if (review != null) {
-            review.setDescription(newDescription);
-            review.setScore(newScore);
-            return true;
-        }
-        return false;
-    }
 }

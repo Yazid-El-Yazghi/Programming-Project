@@ -38,7 +38,8 @@ public class FilmCollection {
      */
     public List<Film> findFilmsByDirector(String director) {
         return films.stream()
-                .filter(film -> film.getDirector() != null && film.getDirector().toLowerCase().startsWith(director.toLowerCase()))
+                .filter(film -> film.getDirector() != null &&
+                        film.getDirector().toLowerCase().contains(director.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
